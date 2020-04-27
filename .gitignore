@@ -1,0 +1,14 @@
+*.pyc
+app.db
+./tmp
+./build/*
+idea
+./.idea/*
+env
+venv
+*.sublime*
+/.idea
+**/*.log
+**/project_settings.json
+**/celerybeat*
+.env

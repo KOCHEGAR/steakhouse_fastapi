@@ -1,0 +1,2 @@
+from .fastapi import fastapi_framework_instance
+APP_FRAMEWORK = fastapi_framework_instance

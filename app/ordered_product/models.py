@@ -1,4 +1,4 @@
-from mongoengine import Document, BooleanField, StringField, ReferenceField, IntField
+from mongoengine import Document, BooleanField, StringField, DictField, IntField
 
 
 class OrderedProduct(Document):
@@ -7,7 +7,8 @@ class OrderedProduct(Document):
     amount_ready = IntField(default=0)
     amount_given = IntField(default=0)
     on_site = BooleanField(default=True)
-    # product =
-    pass
+    product = DictField(required=True)
+
+    meta = {'collection': 'ordered_products', 'strict': False}
 
 

@@ -1,5 +1,7 @@
 from mongoengine import Document, BooleanField, StringField, DateTimeField, \
-    FloatField, ReferenceField, IntField
+    FloatField, ReferenceField, IntField, ListField, PULL
+
+from app.ordered_product.models import OrderedProduct
 
 
 class Order(Document):
@@ -16,6 +18,6 @@ class Order(Document):
     total_count = IntField(required=True)
     total_price = FloatField(required=True)
 
-    # ordered_products
+    ordered_products = ListField(ReferenceField(OrderedProduct, reverse_delete_rule=PULL))
 
     meta = {'collection': 'orders', 'strict': False}

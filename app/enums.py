@@ -8,55 +8,30 @@ class StrEnum(str, Enum):
         return self.value
 
 
-# # # # Payment Types # # # #
-
-class CashPayment(str, Enum):
+class CashPayment(StrEnum):
     cash = 'cash'
 
-    def __get__(self, instance, owner):
-        return self.value
 
-
-class NonCashPayment(str, Enum):
+class NonCashPayment(StrEnum):
     non_cash = 'non_cash'
-
-    def __get__(self, instance, owner):
-        return self.value
 
 
 class PaymentTypes(StrEnum):
     cash = CashPayment.cash
     non_cash = NonCashPayment.non_cash
 
-    # def __get__(self, instance, owner):
-    #     return self.value
 
-
-# # # # Operation Types # # # #
-
-class PaymentOperation(str, Enum):
+class PaymentOperation(StrEnum):
     payment = 'payment'
 
-    def __get__(self, instance, owner):
-        return self.value
 
-
-class CancelOperation(str, Enum):
+class CancelOperation(StrEnum):
     cancel = 'cancel'
 
-    def __get__(self, instance, owner):
-        return self.value
 
-
-class OperationTypes(str, Enum):
+class OperationTypes(StrEnum):
     payment = PaymentOperation.payment
     cancel = CancelOperation.cancel
-
-    def __get__(self, instance, owner):
-        return self.value
-
-
-# # # # Order statuses # # # #
 
 
 class OrderStatuses(StrEnum):
@@ -69,11 +44,20 @@ class OrderStatuses(StrEnum):
     ready_cashier = 'ready_cashier'
     canceled = 'canceled'
 
-#     ordered
-#     payed
-#     in_process
-#     part_ready
-#     order_ready
-#     to_client
-#     ready_cashier
-#     canceled
+
+class OrderedProductStatuses(StrEnum):
+    ordered = 'ordered'
+    payed = 'payed'
+    in_process = 'in_process'
+    ready = 'ready'
+    to_client = 'to_client'
+
+
+class CookRoles(StrEnum):
+    sushi = 'sushi'
+    steak = 'steak'
+    onCashier = 'onCashier'
+
+
+class UserRoles(StrEnum):
+    pass

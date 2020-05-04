@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, BooleanField, FloatField, ReferenceField, IntField
+from mongoengine import Document, StringField, BooleanField, FloatField, IntField
 from app.enums import CookRoles
 
 
@@ -9,7 +9,7 @@ class Product(Document):
     barcode = StringField(required=True)
     product_code = StringField(required=True)
     weight = IntField(required=True)
-    unit = StringField(default='г')
+    measure_unit = StringField(default='г')
     description = StringField(default='Place for description...')
     status_active = BooleanField(default=True)
     cook_sign = StringField(default=CookRoles.steak)

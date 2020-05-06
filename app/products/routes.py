@@ -1,11 +1,13 @@
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Depends
+from .doc_info import doc_get_products
+from . import functions as funcs
+from app.helpers import Pag
 products_router = APIRouter()
 
 
-@products_router.get('/products')
-def get_products():
-    pass
+@products_router.get('/products', **doc_get_products)
+def get_products(pag: Pag = Depends()):
+    return funcs.get_products(**pag.dict())
 
 
 @products_router.post('/products')

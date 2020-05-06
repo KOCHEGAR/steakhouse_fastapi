@@ -30,6 +30,7 @@ class Product(BaseModel):
 
     class Config:
         use_enum_values = True
+        orm_mode = True
 
 
 class ProductForCreatedOrder(BaseModel):

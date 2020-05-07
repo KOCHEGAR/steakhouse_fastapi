@@ -19,3 +19,11 @@ def create_dummy_products():
 def get_products(*args, **kwargs):
     return paginate_model(kwargs['pagination_data'], Product)
 
+
+def get_product(product_id):
+    try:
+        prod = Product.objects.get(id=product_id)
+    except Exception as e:
+        pass
+        # print('--------')
+        # print(e)

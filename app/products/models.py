@@ -1,5 +1,6 @@
 from mongoengine import Document, StringField, BooleanField, FloatField, IntField
 from app.enums import CookRoles
+from marshmallow_mongoengine import ModelSchema
 
 
 class Product(Document):
@@ -16,3 +17,8 @@ class Product(Document):
     tax_rate = FloatField(default=20)
 
     meta = {'collection': 'products', 'strict': False}
+
+
+class ProductMarshmallow(ModelSchema):
+    class Meta:
+        model = Product

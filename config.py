@@ -1,8 +1,8 @@
 
 from starlette.config import Config
 from os import path
-from marshmallow import Schema, fields, INCLUDE
-from marshmallow.exceptions import ValidationError
+from marshmallow import Schema, fields
+# from marshmallow.exceptions import ValidationError
 from logger import logging_decorator
 
 
@@ -26,8 +26,11 @@ def manage_config():
 
     if not path.exists(path.abspath('.env')):
         raise RuntimeError('.env file must be created and filled with information')
-
-    return EnvConfig(unknown=INCLUDE).load(Config('.env').file_values)
+    data, errs = EnvConfig().load(Config('.env').file_values)
+    if errs:
+        raise RuntimeError(f'Errors during reading config file. Errors: {errs}')
+    return data
+    # return EnvConfig().load(Config('.env').file_values)
 
 
 config = manage_config()

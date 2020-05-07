@@ -17,7 +17,7 @@ def create_product():
 
 @products_router.get('/products/{product_id}')
 def get_product(product_id):
-    pass
+    return funcs.get_product(product_id)
 
 
 @products_router.put('/products/{product_id}')

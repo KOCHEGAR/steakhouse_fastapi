@@ -1,10 +1,10 @@
 from typing import List
-from .schemes import Product
+from .schemes import Product, ProductForGetProducts
 from app.helpers import DocInfo, PaginatedResult
 
 
 class ListOfProducts(PaginatedResult):
-    result: List[Product]
+    result: List[ProductForGetProducts]
 
 
 doc_get_products = DocInfo(

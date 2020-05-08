@@ -1,4 +1,4 @@
-from .models import Product
+from .models import Product, ProductMarshmallow
 from app.helpers import paginate_model
 
 
@@ -17,7 +17,7 @@ def create_dummy_products():
 
 
 def get_products(*args, **kwargs):
-    return paginate_model(kwargs['pagination_data'], Product)
+    return paginate_model(kwargs['pagination_data'], ProductMarshmallow)
 
 
 def get_product(product_id):

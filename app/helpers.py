@@ -12,7 +12,7 @@ class DocInfo:
         self.response_description = res_descr
         self.status_code = status_code
         self.response_model = resp_model
-        # self.response_model_exclude_unset = True
+        self.response_model_exclude_unset = True
 
         # for key, val in kwargs.items():
         #     setattr(self, key, val)

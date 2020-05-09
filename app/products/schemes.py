@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from app.enums import CookRoles
-from app.helpers import ObjectIdStr
+from app.helpers import ObjectIdStr, PaginatedResult
 
 
 # class BaseFields:
@@ -30,10 +30,11 @@ class BaseFields:
     barcode: str = Field(title='Product barcode')
     barcode_required: str = Field(..., title='Product barcode')
     product_code: str = Field(title='Product code')
-    product_code_requires: str = Field(..., title='Product code')
+    product_code_required: str = Field(..., title='Product code')
     weight: int = Field(title='Product weight (2000 = 2 kg/liter, for example)')
     weight_required: int = Field(..., title='Product weight (2000 = 2 kg/liter, for example)')
     measure_unit: str = Field('г', title='Product measure unit')
+    measure_unit_required: str = Field('г', title='Product measure unit')
     description: str = Field('Place for description...', title='Product description')
     description_required: str = Field(..., title='Product description')
     status_active: bool = Field(True, title='Product visibility')
@@ -42,22 +43,25 @@ class BaseFields:
     cook_sign_required: CookRoles = Field(..., title='Who will prepare this')
 
 
-class Product(BaseModel):
-    # id: ObjectIdStr
-    title: str = BaseFields.title
-    img: str = BaseFields.img
-    price: float = BaseFields.price
-    barcode: str = BaseFields.barcode
-    product_code: str = BaseFields.product_code
-    weight: int = BaseFields.weight
-    measure_unit: str = BaseFields.measure_unit
-    description: str = BaseFields.description
-    status_active: bool = BaseFields.status_active
-    cook_sign: CookRoles = BaseFields.cook_sign
+class ProductForCreateProduct(BaseModel):
+    title: str = BaseFields.title_required
+    img: str = BaseFields.img_required
+    price: float = BaseFields.price_required
+    barcode: str = BaseFields.barcode_required
+    product_code: str = BaseFields.product_code_required
+    weight: int = BaseFields.weight_required
+    measure_unit: str = BaseFields.measure_unit_required
+    description: str = BaseFields.description_required
+    status_active: bool = BaseFields.status_active_required
+    cook_sign: CookRoles = BaseFields.cook_sign_required
 
     class Config:
         use_enum_values = True
         orm_mode = True
+
+
+class ProductForGetProduct(ProductForCreateProduct):
+    id: ObjectIdStr = BaseFields.id_required
 
 
 class ProductForCreatedOrder(BaseModel):
@@ -86,4 +90,8 @@ class ProductForGetProducts(BaseModel):
 
     class Config:
         use_enum_values = True
-        # orm_mode = True
+        orm_mode = True
+
+
+class ListOfProducts(PaginatedResult):
+    result: List[ProductForGetProducts]

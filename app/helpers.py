@@ -12,10 +12,9 @@ class DocInfo:
         self.response_description = res_descr
         self.status_code = status_code
         self.response_model = resp_model
-        self.response_model_exclude_unset = True
 
-        # for key, val in kwargs.items():
-        #     setattr(self, key, val)
+        for key, val in kwargs.items():
+            setattr(self, key, val)
 
 
 class ObjectIdStr(str):
@@ -49,25 +48,28 @@ class Pag(BaseModel):
         return {'pagination_data': data}
 
 
-def paginate_model(pagination, marshmallow_model):
+def paginate_model(pagination, mongo_model, pydantic_model):
     page = pagination['offset']
     limit = pagination['limit']
-    fields = str(pagination['select_fields']).split(',')
+    fields = [x for x in str(pagination['select_fields']).split(' ') if bool(x)]
     start = (page - 1) * limit
     stop = page * limit
 
-    mongo_model = marshmallow_model.Meta.model
-    models = mongo_model.objects()[start:stop]
-    total_count_of_models = models.count()
-    marshmallow_kwargs = {'many': True}
-
+    valid_fields = []
     if fields:
+        if 'id' not in fields:
+            valid_fields.append('id')
         model_fields = list(mongo_model._fields.keys())
         for field in fields:
             if field in model_fields:
-                marshmallow_kwargs.setdefault('only', []).append(field)
+                valid_fields.append(field)
 
-    models_to_response = marshmallow_model(**marshmallow_kwargs).dump(models).data
+    models = mongo_model.objects().only(*valid_fields)[start:stop]
+    total_count_of_models = models.count()
+    models_to_response = [
+        pydantic_model.from_orm(model).dict(include=set(valid_fields) or None)
+        for model in models]
+
     pagination_result = {
         'next': page + 1 if stop < total_count_of_models else -1,
         'prev': page - 1 if start > 0 and stop < total_count_of_models else -1,

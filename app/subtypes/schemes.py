@@ -2,7 +2,8 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from app.products.schemes import ResponseGetProduct
-from app.helpers import ObjectIdStr, PaginatedResult
+from app.helpers import ObjectIdStr
+from app.utils.pagination import PaginatedResult
 
 
 class BaseFields:

@@ -2,9 +2,21 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from pydantic import BaseModel, Field
 from fastapi import Query
+from fastapi.openapi.utils import (
+    validation_error_definition,
+    validation_error_response_definition,
+)
+from fastapi.openapi.constants import REF_PREFIX
+
 
 
 # For easy building openapi arguments for endpoints
+from starlette.exceptions import HTTPException
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+
+
 class DocInfo:
     def __init__(self, descr='', summ='', res_descr='', status_code=200, resp_model=None, **kwargs):
         self.description = descr
@@ -77,3 +89,31 @@ def paginate_model(pagination, mongo_model, pydantic_model):
         'result': models_to_response
     }
     return pagination_result
+
+
+def http_error_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    err = {exc.status_code: exc.detail}
+    return JSONResponse({"errors": [err]}, status_code=exc.status_code)
+
+
+def handle_422(req: Request, exc: RequestValidationError):
+    errs = {'errors': []}
+
+    for err in exc.errors():
+        err_field_name = err['loc'][-1]
+        err_field_value = exc.body[err_field_name]
+        errs['errors'].append({err_field_name: f"({err_field_value}) - {err['msg']}"})
+    return JSONResponse(errs, status_code=422)
+
+
+validation_error_definition["properties"] = {
+    "field": {"title": "Error field", "type": "string"}
+}
+
+validation_error_response_definition["properties"] = {
+    "errors": {
+        "title": "Errors",
+        "type": "array",
+        "items": {"$ref": REF_PREFIX + "ValidationError", "type": "string"},
+    }
+}

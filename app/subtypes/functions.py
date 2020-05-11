@@ -1,6 +1,7 @@
 from .models import Subtype, SubtypeMarshmallowModel
 from .schemes import SubtypeForGetSubtypes
 from app.helpers import paginate_model
+from app.utils.paginator import Paginator
 
 
 def create_dummy_subtypes():
@@ -17,6 +18,11 @@ def create_dummy_subtypes():
 
 
 def get_subtypes(*args, **kwargs):
+
+    pag = Paginator()
+    print('paginator ', pag.dict())
+    # print(dir(SubtypeForGetSubtypes))
+    print(SubtypeForGetSubtypes.__fields__.keys())
     # return paginate_model(kwargs['pagination_data'], SubtypeMarshmallowModel)
     return paginate_model(kwargs['pagination_data'], Subtype, SubtypeForGetSubtypes)
     pass

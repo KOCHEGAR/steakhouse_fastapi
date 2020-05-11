@@ -12,7 +12,7 @@ class Product(Document):
     weight = IntField(required=True)
     measure_unit = StringField(default='г')
     description = StringField(default='Place for description...')
-    status_active = BooleanField(default=True)
+    status = BooleanField(default=True)
     cook_sign = StringField(default=CookRoles.steak)
     tax_rate = FloatField(default=20)
 

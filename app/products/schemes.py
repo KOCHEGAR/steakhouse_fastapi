@@ -4,23 +4,9 @@ from app.enums import CookRoles
 from app.helpers import ObjectIdStr, PaginatedResult
 
 
-# class BaseFields:
-#     id: ObjectIdStr
-#     title: str = Field(..., title='Product title', min_length=3)
-#     img: str = Field('default.jpg', title='Product image')
-#     price: float = Field(..., title='Product price (in RUB)')
-#     barcode: str = Field(..., title='Product barcode')
-#     product_code: str = Field(..., title='Product code')
-#     weight: int = Field(..., title='Product weight (2000 = 2 kg/liter, for example)')
-#     measure_unit: str = Field('г', title='Product measure unit')
-#     description: str = Field('Place for description...', title='Product description')
-#     status_active: bool = Field(True, title='Product visibility')
-#     cook_sign: CookRoles = Field(..., title='Who will prepare this')
-
-
 class BaseFields:
     id: ObjectIdStr = Field(title='ID сущности')
-    id_required: ObjectIdStr = Field(title='ID сущности')
+    id_required: ObjectIdStr = Field(..., title='ID сущности')
     title: str = Field(title='Product title', min_length=3)
     title_required: str = Field(..., title='Product title', min_length=3)
     img: str = Field('default.jpg', title='Product image')
@@ -37,13 +23,29 @@ class BaseFields:
     measure_unit_required: str = Field('г', title='Product measure unit')
     description: str = Field('Place for description...', title='Product description')
     description_required: str = Field(..., title='Product description')
-    status_active: bool = Field(True, title='Product visibility')
-    status_active_required: bool = Field(..., title='Product visibility')
+    status: bool = Field(True, title='Product visibility')
+    status_required: bool = Field(..., title='Product visibility')
     cook_sign: CookRoles = Field(title='Who will prepare this')
     cook_sign_required: CookRoles = Field(..., title='Who will prepare this')
 
 
-class ProductForCreateProduct(BaseModel):
+class AllOptional(BaseModel):
+    title: Optional[str] = BaseFields.title
+    img: Optional[str] = BaseFields.img
+    price: Optional[float] = BaseFields.price
+    barcode: Optional[str] = BaseFields.barcode
+    product_code: Optional[str] = BaseFields.product_code
+    weight: Optional[int] = BaseFields.weight
+    measure_unit: Optional[str] = BaseFields.measure_unit
+    description: Optional[str] = BaseFields.description
+    status: Optional[bool] = BaseFields.status
+    cook_sign: Optional[CookRoles] = BaseFields.cook_sign
+
+    class Config:
+        use_enum_values = True
+
+
+class AllRequired(BaseModel):
     title: str = BaseFields.title_required
     img: str = BaseFields.img_required
     price: float = BaseFields.price_required
@@ -52,16 +54,30 @@ class ProductForCreateProduct(BaseModel):
     weight: int = BaseFields.weight_required
     measure_unit: str = BaseFields.measure_unit_required
     description: str = BaseFields.description_required
-    status_active: bool = BaseFields.status_active_required
+    status: bool = BaseFields.status_required
     cook_sign: CookRoles = BaseFields.cook_sign_required
 
     class Config:
         use_enum_values = True
+
+
+class RequestCreateProduct(AllRequired):
+    class Config:
+        # use_enum_values = True
         orm_mode = True
 
 
-class ProductForGetProduct(ProductForCreateProduct):
+class ResponseGetProduct(RequestCreateProduct):
     id: ObjectIdStr = BaseFields.id_required
+
+
+class ResponseUpdateProduct(ResponseGetProduct):
+    pass
+
+
+class RequestUpdateProduct(AllOptional):
+    class Config:
+        use_enum_values = True
 
 
 class ProductForCreatedOrder(BaseModel):
@@ -75,18 +91,8 @@ class ProductForCreatedOrder(BaseModel):
         use_enum_values = True
 
 
-class ProductForGetProducts(BaseModel):
-    id: Optional[ObjectIdStr]
-    title: Optional[str]
-    img: Optional[str]
-    price: Optional[float]
-    barcode: Optional[str]
-    product_code: Optional[str]
-    weight: Optional[int]
-    measure_unit: Optional[str]
-    description: Optional[str]
-    status_active: Optional[bool]
-    cook_sign: Optional[CookRoles]
+class ResponseGetProducts(AllOptional):
+    id: Optional[ObjectIdStr] = BaseFields.id
 
     class Config:
         use_enum_values = True
@@ -94,4 +100,4 @@ class ProductForGetProducts(BaseModel):
 
 
 class ListOfProducts(PaginatedResult):
-    result: List[ProductForGetProducts]
+    result: List[ResponseGetProducts]

@@ -2,15 +2,15 @@
 from fastapi import APIRouter, Depends
 from . import functions as funcs
 from .doc_info import doc_get_subtype, doc_get_subtypes
-
-from app.helpers import Pag
+from app.utils.pagination import Paginator
 
 subtypes_router = APIRouter()
 
 
 @subtypes_router.get('/subtypes', **doc_get_subtypes)
-def get_subtypes(pag: Pag = Depends()):
-    return funcs.get_subtypes(**pag.dict())
+def get_subtypes(paginator: Paginator = Depends()):
+    kwargs = {'paginator_instance': paginator}
+    return funcs.get_subtypes(**kwargs)
 
 
 @subtypes_router.post('/subtypes')

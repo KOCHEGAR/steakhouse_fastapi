@@ -2,14 +2,16 @@ from fastapi import APIRouter, Depends, Body
 from .doc_info import doc_get_products, doc_update_product
 from .schemes import RequestUpdateProduct
 from . import functions as funcs
-from app.helpers import Pag
+# from app.helpers import Pag
+from app.utils.pagination import Paginator
 
 products_router = APIRouter()
 
 
 @products_router.get('/products', **doc_get_products)
-def get_products(pag: Pag = Depends()):
-    return funcs.get_products(**pag.dict())
+def get_products(pag: Paginator = Depends()):
+    kwargs = {'painator_instance': pag}
+    return funcs.get_products(**kwargs)
 
 
 @products_router.post('/products')

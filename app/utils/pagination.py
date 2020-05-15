@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import Query
 from pydantic import BaseModel, Field
 
@@ -44,6 +46,10 @@ class Paginator(BaseModel):
             return []
 
         actual_fields = list(pydantic_model.__fields__.keys())
+
         valid_fields = [field for field in fields if field in actual_fields]
+
+        if valid_fields and ('id' not in valid_fields):
+            valid_fields.append('id')
 
         return valid_fields

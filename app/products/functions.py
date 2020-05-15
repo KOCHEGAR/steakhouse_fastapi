@@ -2,8 +2,9 @@ from starlette.exceptions import HTTPException
 
 from .models import Product
 from .schemes import ResponseGetProducts
-# from app.helpers import paginate_model
 
+
+# from app.helpers import paginate_model
 
 
 def create_dummy_products():
@@ -35,9 +36,7 @@ def get_product(product_id):
 
 
 def update_product(product_id, data):
-
     try:
         Product.objects.get(id=product_id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-

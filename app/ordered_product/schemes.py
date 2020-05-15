@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+
 from app.enums import OrderedProductStatuses
 from app.products.schemes import ProductForCreatedOrder
 
@@ -17,6 +18,7 @@ class OrderedProduct(BaseModel):
     amount_ready: int = BaseFields.amount_ready
     amount_given: int = BaseFields.amount_given
     on_site: bool = BaseFields.on_site
+
     # product = Field()
 
     class Config:

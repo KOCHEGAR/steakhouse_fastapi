@@ -26,4 +26,3 @@ def update_type(type_id):
 @types_router.delete('/types/{type_id}')
 def delete_type(type_id):
     pass
-

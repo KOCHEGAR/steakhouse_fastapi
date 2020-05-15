@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
 from fastapi import Query
+from pydantic import BaseModel, Field
 
 
 class PaginatedResult(BaseModel):
@@ -47,6 +47,3 @@ class Paginator(BaseModel):
         valid_fields = [field for field in fields if field in actual_fields]
 
         return valid_fields
-
-
-

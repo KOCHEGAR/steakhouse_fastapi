@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
+
 from . import functions as funcs
-from .schemes import RequestCreateOrder, RequestUpdateOrder
 from .doc_info import doc_create_order, doc_get_order_by_id, doc_update_order, \
     doc_delete_order, doc_get_orders
-
+from .schemes import RequestCreateOrder, RequestUpdateOrder
 
 orders_router = APIRouter()
+
 
 # from fastapi import Query
 # from pydantic import BaseModel

@@ -1,7 +1,7 @@
-
-from mongoengine import Document, StringField, BooleanField, ReferenceField, ListField, PULL
-from app.products.models import Product, ProductMarshmallow
 from marshmallow_mongoengine import ModelSchema, fields
+from mongoengine import Document, StringField, BooleanField, ReferenceField, ListField, PULL
+
+from app.products.models import Product, ProductMarshmallow
 
 
 class Subtype(Document):

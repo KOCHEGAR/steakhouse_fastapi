@@ -1,8 +1,8 @@
-
 from fastapi import APIRouter, Depends
+
+from app.utils.pagination import Paginator
 from . import functions as funcs
 from .doc_info import doc_get_subtype, doc_get_subtypes
-from app.utils.pagination import Paginator
 
 subtypes_router = APIRouter()
 

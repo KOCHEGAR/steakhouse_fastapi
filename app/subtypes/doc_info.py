@@ -1,7 +1,5 @@
-from typing import List
-from app.helpers import DocInfo
-from .schemes import SubtypeForGetSubtype, SubtypeForGetSubtypes, ListOfSubtypes
-
+from .schemes import SubtypeForGetSubtype, ListOfSubtypes
+from ..utils.documentation import DocInfo
 
 doc_get_subtype = DocInfo(
     descr='Get Subtype',

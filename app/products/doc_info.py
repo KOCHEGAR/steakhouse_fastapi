@@ -1,7 +1,5 @@
-from typing import List
 from .schemes import ListOfProducts, ResponseUpdateProduct
-from app.helpers import DocInfo
-
+from ..utils.documentation import DocInfo
 
 doc_get_products = DocInfo(
     descr='Get list of products',

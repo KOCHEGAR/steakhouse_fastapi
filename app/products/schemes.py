@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
 from typing import Optional, List
+
+from pydantic import BaseModel, Field
+
 from app.enums import CookRoles
-from app.helpers import ObjectIdStr
+from app.utils.custom_types import ObjectIdStr
 from app.utils.pagination import PaginatedResult
 
 

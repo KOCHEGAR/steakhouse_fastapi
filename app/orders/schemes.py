@@ -1,12 +1,10 @@
+from typing import Optional, List
 
 from pydantic import BaseModel, Field
-from typing import Optional, List
+
 from app.enums import PaymentTypes
 from app.ordered_product.schemes import OrderedProductForCreatedOrder
 from .enums import AllowedStatusesToCreateOrder, AllowedStatusesToUpdateOrder
-# from pprint import pprint as pp
-
-
 
 
 class BaseFields:
@@ -24,18 +22,19 @@ class BaseFields:
     total_price: float = Field(..., title='Total price for order')
     # ordered_products: List[OrderedProductForCreatedOrder] = Field(..., title='Ordered products')
 
+
 # class OrderSchema(BaseModel):
 #     pass
-    # on_site: bool = Field(True, title='С собой или на месте')
-    # cart_id: bool = Field(..., title='ID корзины')
-    # order_status: AllowedStatusesToCreateOrder = Field(..., title='Статус заказа')
-    # fiscal_order_id: str = Field(..., title='ID заказа из фискальника')
-    # payment_type: PaymentTypes = Field(..., title='Тип оплаты')
-    # payment_link: str = Field('', title='Ссылка безналичного платежа')
-    # cashier_name: str = Field(..., title='Имя кассира')
-    # device_id: str = Field(..., title='ID устройства, с которого был сделан заказ')
-    # title: str = Field(..., title='Обозначение заказа (А-21 например)')
-    # order_time: str = Field(..., title='Время создания заказа')
+# on_site: bool = Field(True, title='С собой или на месте')
+# cart_id: bool = Field(..., title='ID корзины')
+# order_status: AllowedStatusesToCreateOrder = Field(..., title='Статус заказа')
+# fiscal_order_id: str = Field(..., title='ID заказа из фискальника')
+# payment_type: PaymentTypes = Field(..., title='Тип оплаты')
+# payment_link: str = Field('', title='Ссылка безналичного платежа')
+# cashier_name: str = Field(..., title='Имя кассира')
+# device_id: str = Field(..., title='ID устройства, с которого был сделан заказ')
+# title: str = Field(..., title='Обозначение заказа (А-21 например)')
+# order_time: str = Field(..., title='Время создания заказа')
 
 
 class RequestCreateOrder(BaseModel):

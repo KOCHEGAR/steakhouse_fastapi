@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, Body
-from .doc_info import doc_get_products, doc_update_product
-from .schemes import RequestUpdateProduct
-from . import functions as funcs
+
 # from app.helpers import Pag
 from app.utils.pagination import Paginator
+from . import functions as funcs
+from .doc_info import doc_get_products, doc_update_product
+from .schemes import RequestUpdateProduct
 
 products_router = APIRouter()
 

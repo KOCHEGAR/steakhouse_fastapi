@@ -1,4 +1,5 @@
 from mongoengine import Document, BooleanField, StringField, DictField, IntField
+
 from app.enums import OrderedProductStatuses
 
 
@@ -11,5 +12,3 @@ class OrderedProduct(Document):
     product = DictField(required=True)
 
     meta = {'collection': 'ordered_products', 'strict': False}
-
-

@@ -1,20 +1,19 @@
+from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
+from mongoengine import connect, disconnect
 from starlette.exceptions import HTTPException
 
 from config import config
-from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-
-from mongoengine import connect, disconnect
-from .helpers import http_error_handler, handle_422
-
-from .orders.routes import orders_router
 from .cart.routes import cart_router
+from .orders.routes import orders_router
 from .products.routes import products_router
-from .types.routes import types_router
 from .subtypes.routes import subtypes_router
+from .types.routes import types_router
+from .utils.errors import http_error_handler, handle_422
+
+# from .helpers import http_error_handler, handle_422
 
 app = FastAPI()
-
 
 # app.include_router(orders_router, prefix='/api', tags=['Orders operations'])
 # app.include_router(cart_router, prefix='/api', tags=['Cart operations'])
@@ -29,7 +28,6 @@ connect(
     port=config['MONGO_PORT'],
     db=config['MONGO_DBNAME']
 )
-
 
 app.add_exception_handler(HTTPException, http_error_handler)
 app.add_exception_handler(RequestValidationError, handle_422)

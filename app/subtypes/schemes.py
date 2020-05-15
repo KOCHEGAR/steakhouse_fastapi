@@ -1,8 +1,9 @@
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
-from typing import List, Optional
+
 from app.products.schemes import ResponseGetProduct
-from app.helpers import ObjectIdStr
+from app.utils.custom_types import ObjectIdStr
 from app.utils.pagination import PaginatedResult
 
 
@@ -21,6 +22,7 @@ class SubtypeForGetSubtype(BaseModel):
     id: ObjectIdStr = BaseFields.id_required
     title: str = BaseFields.title_required
     status: bool = BaseFields.status_required
+
     # products: List[ResponseGetProduct] = BaseFields.products_required
 
     class Config:
@@ -31,6 +33,7 @@ class SubtypeForGetSubtypes(BaseModel):
     id: ObjectIdStr = BaseFields.id_required
     title: Optional[str] = BaseFields.title
     status: Optional[bool] = BaseFields.status
+
     # products: Optional[List[ResponseGetProduct]] = BaseFields.products
 
     class Config:

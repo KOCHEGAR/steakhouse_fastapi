@@ -1,8 +1,7 @@
-from typing import List
 from starlette.status import HTTP_201_CREATED
-from app.helpers import DocInfo
-from .schemes import ResponseCreateOrder, ResponseGetOrder
 
+from .schemes import ResponseCreateOrder, ResponseGetOrder
+from ..utils.documentation import DocInfo
 
 doc_get_orders = DocInfo(
     descr='Get list of orders',
@@ -19,14 +18,12 @@ doc_create_order = DocInfo(
     resp_model=ResponseCreateOrder
 ).__dict__
 
-
 doc_get_order_by_id = DocInfo(
     descr='Get order by ID',
     summ='Get order by ID',
     res_descr='Retrieved order',
     resp_model=ResponseGetOrder
 ).__dict__
-
 
 allowed_fields_to_update = [
     'on_site', 'order_status'
@@ -37,7 +34,6 @@ doc_update_order = DocInfo(
     summ='Update order',
     res_descr='Order updated'
 ).__dict__
-
 
 doc_delete_order = DocInfo(
     descr='Delete order by ID',

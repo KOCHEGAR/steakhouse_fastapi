@@ -1,6 +1,7 @@
-from mongoengine import Document, StringField, BooleanField, FloatField, IntField
-from app.enums import CookRoles
 from marshmallow_mongoengine import ModelSchema
+from mongoengine import Document, StringField, BooleanField, FloatField, IntField
+
+from app.enums import CookRoles
 
 
 class Product(Document):

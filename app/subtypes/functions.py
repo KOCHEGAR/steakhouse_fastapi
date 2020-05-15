@@ -1,3 +1,4 @@
+from app.utils.errors import SteakhouseException
 from .models import Subtype
 from .schemes import SubtypeForGetSubtypes
 
@@ -25,12 +26,9 @@ def create_subtype():
 
 def get_subtype(subtype_id):
     try:
-        subtype = Subtype.objects.get(id=subtype_id)
-        return subtype
+        return Subtype.objects.get(id=subtype_id)
     except Exception as e:
-        print(f'exception {e}')
-        return 'Not found such subtype'
-    # return 'Found'
+        raise SteakhouseException(f'No such element with id ({subtype_id})')
 
 
 def update_subtype():

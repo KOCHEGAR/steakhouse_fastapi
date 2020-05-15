@@ -9,9 +9,7 @@ from .orders.routes import orders_router
 from .products.routes import products_router
 from .subtypes.routes import subtypes_router
 from .types.routes import types_router
-from .utils.errors import http_error_handler, handle_422
-
-# from .helpers import http_error_handler, handle_422
+from .utils.errors import http_error_handler, handle_422, SteakhouseException
 
 app = FastAPI()
 
@@ -30,6 +28,7 @@ connect(
 )
 
 app.add_exception_handler(HTTPException, http_error_handler)
+app.add_exception_handler(SteakhouseException, http_error_handler)
 app.add_exception_handler(RequestValidationError, handle_422)
 
 

@@ -11,7 +11,7 @@ class Subtype(Document):
 
     meta = {'collection': 'subtypes', 'strict': False}
 
-    def _check_presence(self, product_instance):
+    def check_presence(self, product_instance):
         return product_instance in self.products
 
     def add_product(self, product_instance):

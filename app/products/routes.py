@@ -11,7 +11,7 @@ products_router = APIRouter()
 
 @products_router.get('/products', **doc_get_products)
 def get_products(pag: Paginator = Depends()):
-    kwargs = {'painator_instance': pag}
+    kwargs = {'paginator_instance': pag}
     return funcs.get_products(**kwargs)
 
 

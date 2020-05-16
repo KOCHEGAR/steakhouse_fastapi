@@ -1,15 +1,15 @@
 from fastapi.openapi.constants import REF_PREFIX
 from fastapi.openapi.utils import validation_error_definition, validation_error_response_definition
 
-validation_error_definition["properties"] = {
-    "field": {"title": "Error field", "type": "string"}
-}
+del validation_error_definition['required']
+del validation_error_definition["properties"]
+validation_error_definition['type'] = 'string'
 
 validation_error_response_definition["properties"] = {
     "errors": {
         "title": "Errors",
         "type": "array",
-        "items": {"$ref": REF_PREFIX + "ValidationError", "type": "string"},
+        "items": {"$ref": REF_PREFIX + "ValidationError"},
     }
 }
 

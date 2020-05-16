@@ -57,16 +57,23 @@ class RequestUpdateSubtype(AllOptional):
     pass
 
 
-class ResponseUpdateSubtype(AllRequired):
-    id: ObjectIdStr = BaseFields.id_required
+# class ResponseUpdateSubtype(AllRequired):
+#     id: ObjectIdStr = BaseFields.id_required
+#
+#     class Config:
+#         orm_mode = True
 
-    class Config:
-        orm_mode = True
 
-
-class ResponseDeleteSubtype(BaseModel):
-    id: ObjectIdStr = BaseFields.id_required
+# class ResponseDeleteSubtype(BaseModel):
+#     id: ObjectIdStr = BaseFields.id_required
 
 
 class ListOfSubtypes(PaginatedResult):
     result: List[ResponseGetSubtypes]
+
+
+class ResponseGetSubtypeProducts(BaseModel):
+    products: List[ResponseGetProduct] = BaseFields.products_required
+
+    class Config:
+        orm_mode = True

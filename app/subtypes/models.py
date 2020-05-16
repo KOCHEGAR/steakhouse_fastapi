@@ -14,12 +14,14 @@ class Subtype(Document):
     def check_presence(self, product_instance):
         return product_instance in self.products
 
+    def get_products(self):
+        return self.products
+
     def add_product(self, product_instance):
-        self.products.append(product_instance)
-        self.save()
+        self.modify(push__products=product_instance)
 
     def remove_product(self, product_instance):
-        pass
+        self.modify(pull__products=product_instance)
 
 
 class SubtypeMarshmallowModel(ModelSchema):

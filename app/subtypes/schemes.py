@@ -18,27 +18,55 @@ class BaseFields:
     products_required: List[ResponseGetProduct] = Field(..., title='list of products')
 
 
-class SubtypeForGetSubtype(BaseModel):
-    id: ObjectIdStr = BaseFields.id_required
+class AllRequired(BaseModel):
     title: str = BaseFields.title_required
     status: bool = BaseFields.status_required
 
-    # products: List[ResponseGetProduct] = BaseFields.products_required
 
-    class Config:
-        orm_mode = True
-
-
-class SubtypeForGetSubtypes(BaseModel):
-    id: ObjectIdStr = BaseFields.id_required
+class AllOptional(BaseModel):
     title: Optional[str] = BaseFields.title
     status: Optional[bool] = BaseFields.status
 
-    # products: Optional[List[ResponseGetProduct]] = BaseFields.products
+
+class RequestCreateSubtype(AllRequired):
+    pass
+
+
+class ResponseCreateSubtype(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
 
     class Config:
         orm_mode = True
 
 
+class ResponseGetSubtype(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
+        orm_mode = True
+
+
+class ResponseGetSubtypes(AllOptional):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
+        orm_mode = True
+
+
+class RequestUpdateSubtype(AllOptional):
+    pass
+
+
+class ResponseUpdateSubtype(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
+        orm_mode = True
+
+
+class ResponseDeleteSubtype(BaseModel):
+    id: ObjectIdStr = BaseFields.id_required
+
+
 class ListOfSubtypes(PaginatedResult):
-    result: List[SubtypeForGetSubtypes]
+    result: List[ResponseGetSubtypes]

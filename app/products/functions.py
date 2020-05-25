@@ -1,10 +1,8 @@
-from starlette.exceptions import HTTPException
 
 from .models import Product
 from .schemes import ResponseGetProducts
-
-
-# from app.helpers import paginate_model
+from app.utils.mongoengine_helpers import get_model_by_id_or_raise
+from app.utils.errors import SteakhouseException
 
 
 def create_dummy_products():
@@ -23,20 +21,29 @@ def create_dummy_products():
 
 def get_products(*args, **kwargs):
     return kwargs['paginator_instance'].paginate_model(ResponseGetProducts, Product)
-    # return paginate_model(kwargs['pagination_data'], Product, ResponseGetProducts)
 
 
-def get_product(product_id):
-    try:
-        prod = Product.objects.get(id=product_id)
-    except Exception as e:
-        pass
-        # print('--------')
-        # print(e)
+def get_product(*args, **kwargs):
+    item_id = kwargs['id']
+    return get_model_by_id_or_raise(Product, item_id)
 
 
-def update_product(product_id, data):
-    try:
-        Product.objects.get(id=product_id)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def create_product(*args, **kwargs):
+    data = kwargs['data']
+
+
+def update_product(*args, **kwargs):
+    item_id = kwargs['id']
+    data = kwargs['data']
+
+    if not data:
+        raise SteakhouseException(f'Empty data to update')
+
+    product = get_model_by_id_or_raise(Product, item_id)
+    product.update(**data)
+
+
+def delete_product(*args, **kwargs):
+    item_id = kwargs['id']
+    product = get_model_by_id_or_raise(Product, item_id)
+    product.delete()

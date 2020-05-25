@@ -65,8 +65,16 @@ class AllRequired(BaseModel):
 
 
 class RequestCreateProduct(AllRequired):
-    class Config:
+    pass
+    # class Config:
         # use_enum_values = True
+        # orm_mode = True
+
+
+class ResponseCreateProduct(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
         orm_mode = True
 
 
@@ -92,6 +100,14 @@ class ProductForCreatedOrder(BaseModel):
 
     class Config:
         use_enum_values = True
+
+
+class ResponseGetProduct(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
+        use_enum_values = True
+        orm_mode = True
 
 
 class ResponseGetProducts(AllOptional):

@@ -56,7 +56,7 @@ def add_subtype_to_type(*args, **kwargs):
     _type, subtype = _add_or_remove(**kwargs)
 
     if _type.check_presence(subtype):
-        raise SteakhouseException('That product already in this subtype')
+        raise SteakhouseException('That subtype already in this type')
 
     _type.add_subtype(subtype)
 
@@ -65,7 +65,7 @@ def remove_subtype_from_type(*args, **kwargs):
     _type, subtype = _add_or_remove(**kwargs)
 
     if not _type.check_presence(subtype):
-        raise SteakhouseException('That product not found in this subtype')
+        raise SteakhouseException('That subtype not found in this type')
 
     _type.remove_subtype(subtype)
 

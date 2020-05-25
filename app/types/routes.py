@@ -45,13 +45,13 @@ def get_subtypes_in_type(type_id: str):
     return funcs.get_subtypes_in_type(**kwargs)
 
 
-@types_router.post('/types/{type_id}/subtypes/{subtype_id}', )
+@types_router.post('/types/{type_id}/subtypes/{subtype_id}', **doc_add_subtype_to_type)
 def add_subtype_to_type(type_id: str, subtype_id: str):
     kwargs = {'type_id': type_id, 'subtype_id': subtype_id}
     funcs.add_subtype_to_type(**kwargs)
 
 
-@types_router.delete('/types/{type_id}/subtypes/{subtype_id}', )
+@types_router.delete('/types/{type_id}/subtypes/{subtype_id}', **doc_delete_subtype_from_type)
 def remove_subtype_from_type(type_id: str, subtype_id: str):
     kwargs = {'type_id': type_id, 'subtype_id': subtype_id}
     funcs.remove_subtype_from_type(**kwargs)

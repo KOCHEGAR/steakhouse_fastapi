@@ -50,7 +50,7 @@ doc_get_type_subtypes = DocInfo(
 doc_add_subtype_to_type = DocInfo(
     descr='Add subtype to type',
     summ='Add subtype to type',
-    res_descr='subtype is added to type',
+    res_descr='Subtype is added to type',
     status_code=HTTP_204_NO_CONTENT
 ).__dict__
 

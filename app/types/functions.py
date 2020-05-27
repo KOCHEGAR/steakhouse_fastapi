@@ -1,5 +1,6 @@
 from app.subtypes.models import Subtype
 from app.utils.errors import SteakhouseException
+from app.utils.logging import logging_decorator
 from app.utils.mongoengine_helpers import get_model_by_id_or_raise
 from .models import Type
 from .schemes import ResponseGetTypes
@@ -14,20 +15,24 @@ def create_dummy_items():
         p.save()
 
 
+@logging_decorator('types.log', 'types_logger', 'GET TYPES')
 def get_types(*args, **kwargs):
     return kwargs['paginator_instance'].paginate_model(ResponseGetTypes, Type)
 
 
+@logging_decorator('types.log', 'types_logger', 'CREATE TYPE')
 def create_type(*args, **kwargs):
     data = kwargs['data']
     return Type(**data).save()
 
 
+@logging_decorator('types.log', 'types_logger', 'GET TYPE')
 def get_type(*args, **kwargs):
     item_id = kwargs['id']
     return get_model_by_id_or_raise(Type, item_id)
 
 
+@logging_decorator('types.log', 'types_logger', 'UPDATE TYPE')
 def update_type(*args, **kwargs):
     item_id = kwargs['id']
     data = kwargs['data']
@@ -39,6 +44,7 @@ def update_type(*args, **kwargs):
     _type.update(**data)
 
 
+@logging_decorator('types.log', 'types_logger', 'DELETE TYPE')
 def delete_type(*args, **kwargs):
     item_id = kwargs['id']
 
@@ -46,12 +52,14 @@ def delete_type(*args, **kwargs):
     _type.delete()
 
 
+@logging_decorator('types.log', 'types_logger', 'GET SUBTYPES IN TYPE')
 def get_subtypes_in_type(*args, **kwargs):
     item_id = kwargs['id']
     _type = get_model_by_id_or_raise(Type, item_id, include_nested=True)
     return _type
 
 
+@logging_decorator('types.log', 'types_logger', 'ADD SUBTYPE TO TYPE')
 def add_subtype_to_type(*args, **kwargs):
     _type, subtype = _add_or_remove(**kwargs)
 
@@ -61,6 +69,7 @@ def add_subtype_to_type(*args, **kwargs):
     _type.add_subtype(subtype)
 
 
+@logging_decorator('types.log', 'types_logger', 'REMOVE SUBTYPE FROM TYPE')
 def remove_subtype_from_type(*args, **kwargs):
     _type, subtype = _add_or_remove(**kwargs)
 

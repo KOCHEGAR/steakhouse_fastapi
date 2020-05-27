@@ -3,6 +3,7 @@ from .models import Product
 from .schemes import ResponseGetProducts
 from app.utils.mongoengine_helpers import get_model_by_id_or_raise
 from app.utils.errors import SteakhouseException
+from app.utils.logging import logging_decorator
 
 
 def create_dummy_products():
@@ -19,20 +20,24 @@ def create_dummy_products():
         p.save()
 
 
+@logging_decorator('products.log', 'products_logger', 'GET PRODUCTS')
 def get_products(*args, **kwargs):
     return kwargs['paginator_instance'].paginate_model(ResponseGetProducts, Product)
 
 
+@logging_decorator('products.log', 'products_logger', 'GET PRODUCT')
 def get_product(*args, **kwargs):
     item_id = kwargs['id']
     return get_model_by_id_or_raise(Product, item_id)
 
 
+@logging_decorator('products.log', 'products_logger', 'CREATE PRODUCT')
 def create_product(*args, **kwargs):
     data = kwargs['data']
     return Product(**data).save()
 
 
+# @logging_decorator('products.log', 'products_logger', 'ADD IMAGE')
 # def add_image_to_product(*args, **kwargs):
 #   image will be generated in saved here...
 #
@@ -40,6 +45,7 @@ def create_product(*args, **kwargs):
 #   pass
 
 
+@logging_decorator('products.log', 'products_logger', 'UPDATE PRODUCT')
 def update_product(*args, **kwargs):
     item_id = kwargs['id']
     data = kwargs['data']
@@ -51,6 +57,7 @@ def update_product(*args, **kwargs):
     product.update(**data)
 
 
+@logging_decorator('products.log', 'products_logger', 'DELETE PRODUCT')
 def delete_product(*args, **kwargs):
     item_id = kwargs['id']
     product = get_model_by_id_or_raise(Product, item_id)

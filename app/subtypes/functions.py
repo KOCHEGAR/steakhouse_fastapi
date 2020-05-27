@@ -3,6 +3,7 @@ from app.utils.errors import SteakhouseException
 from app.utils.mongoengine_helpers import get_model_by_id_or_raise
 from .models import Subtype
 from .schemes import ResponseGetSubtypes
+from app.utils.logging import logging_decorator
 
 
 def create_dummy_subtypes():
@@ -14,20 +15,24 @@ def create_dummy_subtypes():
         p.save()
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'GET SUBTYPES')
 def get_subtypes(*args, **kwargs):
     return kwargs['paginator_instance'].paginate_model(ResponseGetSubtypes, Subtype)
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'CREATE SUBTYPE')
 def create_subtype(*args, **kwargs):
     data = kwargs['data']
     return Subtype(**data).save()
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'GET SUBTYPE')
 def get_subtype(*args, **kwargs):
     item_id = kwargs['id']
     return get_model_by_id_or_raise(Subtype, item_id)
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'UPDATE SUBTYPE')
 def update_subtype(*args, **kwargs):
     item_id = kwargs['id']
     data = kwargs['data']
@@ -39,6 +44,7 @@ def update_subtype(*args, **kwargs):
     subtype.update(**data)
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'DELETE SUBTYPE')
 def delete_subtype(*args, **kwargs):
     item_id = kwargs['id']
 
@@ -46,12 +52,14 @@ def delete_subtype(*args, **kwargs):
     subtype.delete()
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'GET PRODUCTS IN SUBTYPE')
 def get_products_in_subtype(*args, **kwargs):
     item_id = kwargs['id']
     subtype = get_model_by_id_or_raise(Subtype, item_id, include_nested=True)
     return subtype
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'ADD PRODUCT TO SUBTYPE')
 def add_product_to_subtype(*args, **kwargs):
     subtype, product = _add_or_remove(**kwargs)
 
@@ -61,6 +69,7 @@ def add_product_to_subtype(*args, **kwargs):
     subtype.add_product(product)
 
 
+@logging_decorator('subtypes.log', 'subtypes_logger', 'REMOVE PRODUCT FROM SUBTYPE')
 def remove_product_from_subtype(*args, **kwargs):
     subtype, product = _add_or_remove(**kwargs)
 

@@ -92,11 +92,12 @@ class RequestUpdateProduct(AllOptional):
 
 
 class ProductForCreatedOrder(BaseModel):
-    id: ObjectIdStr = BaseFields.id
-    barcode: str = BaseFields.barcode
-    product_code: str = BaseFields.product_code
-    title: str = BaseFields.title
-    cook_sign: CookRoles = BaseFields.cook_sign
+    id: ObjectIdStr = BaseFields.id_required
+    barcode: str = BaseFields.barcode_required
+    product_code: str = BaseFields.product_code_required
+    title: str = BaseFields.title_required
+    cook_sign: CookRoles = BaseFields.cook_sign_required
+    price: float = BaseFields.price_required
 
     class Config:
         use_enum_values = True

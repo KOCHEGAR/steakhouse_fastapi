@@ -1,14 +1,18 @@
 from fastapi.exceptions import RequestValidationError
-
+from pymongo.errors import ServerSelectionTimeoutError
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY, HTTP_500_INTERNAL_SERVER_ERROR
 
 
 def http_error_handler(request: Request, exc: HTTPException) -> JSONResponse:
     err = {exc.status_code: exc.detail}
     return JSONResponse({"errors": [exc.detail]}, status_code=exc.status_code)
+
+
+def handle_db_connection_error(req: Request, exc: ServerSelectionTimeoutError):
+    return JSONResponse({"errors": ['DB connection error']}, status_code=HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def handle_422(req: Request, exc: RequestValidationError):

@@ -5,40 +5,54 @@ from pydantic import BaseModel, Field
 from app.enums import PaymentTypes
 from app.ordered_product.schemes import OrderedProductForCreatedOrder
 from .enums import AllowedStatusesToCreateOrder, AllowedStatusesToUpdateOrder
+from app.utils.custom_types import ObjectIdStr
+from app.utils.pagination import PaginatedResult
 
 
 class BaseFields:
-    cart_id: str = Field(..., title='cart ID')
-    on_site: bool = Field(True, title='Sit and eat or take and leave')
-    order_status: AllowedStatusesToCreateOrder = Field(..., title='Order status')
-    fiscal_order_id: str = Field(..., title='order ID inside fiscal device')
-    payment_type: PaymentTypes = Field(..., title='Payment type')
+    id: ObjectIdStr = Field(title='ID of order')
+    id_required: ObjectIdStr = Field(..., title='ID of order')
+    cart_id: ObjectIdStr = Field(title='cart ID')
+    cart_id_required: ObjectIdStr = Field(..., title='cart ID')
+    on_site: bool = Field(title='Sit and eat or take and leave')
+    on_site_required: bool = Field(..., title='Sit and eat or take and leave')
+    order_status: AllowedStatusesToCreateOrder = Field(title='Order status')
+    order_status_required: AllowedStatusesToCreateOrder = Field(..., title='Order status')
+    fiscal_order_id: str = Field(title='order ID inside fiscal device')
+    fiscal_order_id_required: str = Field(..., title='order ID inside fiscal device')
+    payment_type: PaymentTypes = Field(title='Payment type')
+    payment_type_required: PaymentTypes = Field(..., title='Payment type')
     payment_link: str = Field('', title='Cashless payment link')
-    cashier_name: str = Field(..., title='Cashier name')
-    device_id: str = Field(..., title='Device id that accepted and processed order')
-    title: str = Field(..., title='Order title (А-21 for example)')
-    order_time: str = Field(..., title='Order creation time (from fiscal device)')
-    total_count: int = Field(..., title='Total count of product in order')
-    total_price: float = Field(..., title='Total price for order')
-    # ordered_products: List[OrderedProductForCreatedOrder] = Field(..., title='Ordered products')
+    # payment_link_required: str = Field('', title='Cashless payment link')
+    cashier_name: str = Field(title='Cashier name')
+    cashier_name_required: str = Field(..., title='Cashier name')
+    device_id: str = Field(title='Device id that accepted and processed order')
+    device_id_required: str = Field(..., title='Device id that accepted and processed order')
+    title: str = Field(title='Order title (А-21 for example)')
+    title_required: str = Field(..., title='Order title (А-21 for example)')
+    order_time: str = Field(title='Order creation time (from fiscal device)')
+    order_time_required: str = Field(..., title='Order creation time (from fiscal device)')
+    total_count: int = Field(title='Total count of product in order')
+    total_count_required: int = Field(..., title='Total count of product in order')
+    total_price: float = Field(title='Total price for order')
+    total_price_required: float = Field(..., title='Total price for order')
+    ordered_products: List[OrderedProductForCreatedOrder] = Field(title='Ordered products')
+    ordered_products_required: List[OrderedProductForCreatedOrder] = Field(..., title='Ordered products')
 
 
-# class OrderSchema(BaseModel):
-#     pass
-# on_site: bool = Field(True, title='С собой или на месте')
-# cart_id: bool = Field(..., title='ID корзины')
-# order_status: AllowedStatusesToCreateOrder = Field(..., title='Статус заказа')
-# fiscal_order_id: str = Field(..., title='ID заказа из фискальника')
-# payment_type: PaymentTypes = Field(..., title='Тип оплаты')
-# payment_link: str = Field('', title='Ссылка безналичного платежа')
-# cashier_name: str = Field(..., title='Имя кассира')
-# device_id: str = Field(..., title='ID устройства, с которого был сделан заказ')
-# title: str = Field(..., title='Обозначение заказа (А-21 например)')
-# order_time: str = Field(..., title='Время создания заказа')
+class AllRequired(BaseModel):
+    on_site: bool = BaseFields.on_site_required
+    order_status: AllowedStatusesToCreateOrder = BaseFields.order_status_required
+    fiscal_order_id: str = BaseFields.fiscal_order_id_required
+    payment_type: PaymentTypes = BaseFields.payment_type_required
+    payment_link: str = BaseFields.payment_link
+    cashier_name: str = BaseFields.cashier_name_required
+    device_id: str = BaseFields.device_id_required
+    title: str = BaseFields.title_required
+    order_time: str = BaseFields.order_time_required
 
 
-class RequestCreateOrder(BaseModel):
-    cart_id: str = BaseFields.cart_id
+class AllOptional(BaseModel):
     on_site: bool = BaseFields.on_site
     order_status: AllowedStatusesToCreateOrder = BaseFields.order_status
     fiscal_order_id: str = BaseFields.fiscal_order_id
@@ -48,24 +62,18 @@ class RequestCreateOrder(BaseModel):
     device_id: str = BaseFields.device_id
     title: str = BaseFields.title
     order_time: str = BaseFields.order_time
+
+
+class RequestCreateOrder(AllRequired):
+    cart_id: ObjectIdStr = BaseFields.cart_id_required
 
     class Config:
         use_enum_values = True
 
 
-class ResponseCreateOrder(BaseModel):
-    on_site: bool = BaseFields.on_site
-    order_status: AllowedStatusesToCreateOrder = BaseFields.order_status
-    fiscal_order_id: str = BaseFields.fiscal_order_id
-    payment_type: PaymentTypes = BaseFields.payment_type
-    payment_link: str = BaseFields.payment_link
-    cashier_name: str = BaseFields.cashier_name
-    device_id: str = BaseFields.device_id
-    title: str = BaseFields.title
-    order_time: str = BaseFields.order_time
-    total_count: int = BaseFields.total_count
-    total_price: float = BaseFields.total_price
-    ordered_products: List[OrderedProductForCreatedOrder] = Field(..., title='Ordered products')
+class ResponseCreateOrder(AllRequired):
+    id: ObjectIdStr = BaseFields.id_required
+    ordered_products: List[OrderedProductForCreatedOrder] = BaseFields.ordered_products_required
 
     class Config:
         use_enum_values = True
@@ -76,8 +84,20 @@ class ResponseGetOrder(ResponseCreateOrder):
 
 
 class RequestUpdateOrder(BaseModel):
-    on_site: Optional[bool] = Field(title='С собой или на месте')
-    order_status: Optional[AllowedStatusesToUpdateOrder] = Field(title='Статус заказа')
+    on_site: Optional[bool] = BaseFields.on_site
+    order_status: Optional[AllowedStatusesToUpdateOrder] = BaseFields.order_status
 
     class Config:
         use_enum_values = True
+
+
+class ResponseGetOrders(AllOptional):
+    id: ObjectIdStr = BaseFields.id_required
+
+    class Config:
+        use_enum_values = True
+        orm_mode = True
+
+
+class ListOfOrders(PaginatedResult):
+    result: List[ResponseGetOrders]

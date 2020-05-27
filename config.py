@@ -1,9 +1,9 @@
-
-from starlette.config import Config
 from os import path
+
 from marshmallow import Schema, fields
-# from marshmallow.exceptions import ValidationError
-from logger import logging_decorator
+from starlette.config import Config
+
+from app.utils.logging import logging_decorator
 
 
 @logging_decorator('config_build.log', 'manage_config', 'create_config')

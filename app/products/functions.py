@@ -30,6 +30,14 @@ def get_product(*args, **kwargs):
 
 def create_product(*args, **kwargs):
     data = kwargs['data']
+    return Product(**data).save()
+
+
+# def add_image_to_product(*args, **kwargs):
+#   image will be generated in saved here...
+#
+#   will be implemented later...
+#   pass
 
 
 def update_product(*args, **kwargs):

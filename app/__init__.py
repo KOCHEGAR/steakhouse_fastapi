@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from mongoengine import connect, disconnect
+from pymongo.errors import ServerSelectionTimeoutError
 from starlette.exceptions import HTTPException
 
 from config import config
@@ -9,11 +10,11 @@ from .orders.routes import orders_router
 from .products.routes import products_router
 from .subtypes.routes import subtypes_router
 from .types.routes import types_router
-from .utils.errors import http_error_handler, handle_422, SteakhouseException
+from .utils.errors import http_error_handler, handle_422, SteakhouseException, handle_db_connection_error
 
 app = FastAPI()
 
-# app.include_router(orders_router, prefix='/api', tags=['Orders operations'])
+app.include_router(orders_router, prefix='/api', tags=['Orders operations'])
 # app.include_router(cart_router, prefix='/api', tags=['Cart operations'])
 app.include_router(types_router, prefix='/api', tags=['Types operations'])
 app.include_router(subtypes_router, prefix='/api', tags=['Subtypes operations'])
@@ -28,6 +29,7 @@ connect(
 )
 
 app.add_exception_handler(HTTPException, http_error_handler)
+app.add_exception_handler(ServerSelectionTimeoutError, handle_db_connection_error)
 app.add_exception_handler(SteakhouseException, http_error_handler)
 app.add_exception_handler(RequestValidationError, handle_422)
 

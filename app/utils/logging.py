@@ -44,6 +44,7 @@ def get_logger(filename, logger_name):
 
 
 def logging_decorator(filename, logger_name, operation=''):
+    """ Logger for logging app's incoming http operations. """
     def _logging_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

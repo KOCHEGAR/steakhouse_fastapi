@@ -1,13 +1,12 @@
 from starlette.status import HTTP_201_CREATED
 
+from app.utils.documentation import DocInfo
 from .schemes import ResponseCreateOrder, ResponseGetOrder
-from ..utils.documentation import DocInfo
 
 doc_get_orders = DocInfo(
     descr='Get list of orders',
     summ='Get orders',
     res_descr='List of orders',
-    # resp_model=List[ResponseGetOrder]
 ).__dict__
 
 doc_create_order = DocInfo(

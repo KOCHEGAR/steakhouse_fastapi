@@ -2,11 +2,11 @@ from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
-from app.enums import PaymentTypes
-from app.ordered_product.schemes import OrderedProductForCreatedOrder
-from .enums import AllowedStatusesToCreateOrder, AllowedStatusesToUpdateOrder
+from app.enums import PaymentTypes, OperationTypes
+from app.ordered_product.schemes import OrderedProductForOrder
 from app.utils.custom_types import ObjectIdStr
 from app.utils.pagination import PaginatedResult
+from .enums import AllowedStatusesToCreateOrder, AllowedStatusesToUpdateOrder
 
 
 class BaseFields:
@@ -20,6 +20,8 @@ class BaseFields:
     order_status_required: AllowedStatusesToCreateOrder = Field(..., title='Order status')
     fiscal_order_id: str = Field(title='order ID inside fiscal device')
     fiscal_order_id_required: str = Field(..., title='order ID inside fiscal device')
+    operation_type: OperationTypes = Field(title='Type of operation (payment/cancel)')
+    operation_type_required: OperationTypes = Field(..., title='Type of operation (payment/cancel)')
     payment_type: PaymentTypes = Field(title='Payment type')
     payment_type_required: PaymentTypes = Field(..., title='Payment type')
     payment_link: str = Field('', title='Cashless payment link')
@@ -36,8 +38,8 @@ class BaseFields:
     total_count_required: int = Field(..., title='Total count of product in order')
     total_price: float = Field(title='Total price for order')
     total_price_required: float = Field(..., title='Total price for order')
-    ordered_products: List[OrderedProductForCreatedOrder] = Field(title='Ordered products')
-    ordered_products_required: List[OrderedProductForCreatedOrder] = Field(..., title='Ordered products')
+    ordered_products: List[OrderedProductForOrder] = Field(title='Ordered products')
+    ordered_products_required: List[OrderedProductForOrder] = Field(..., title='Ordered products')
 
 
 class AllRequired(BaseModel):
@@ -45,6 +47,7 @@ class AllRequired(BaseModel):
     order_status: AllowedStatusesToCreateOrder = BaseFields.order_status_required
     fiscal_order_id: str = BaseFields.fiscal_order_id_required
     payment_type: PaymentTypes = BaseFields.payment_type_required
+    operation_type: PaymentTypes = BaseFields.operation_type_required
     payment_link: str = BaseFields.payment_link
     cashier_name: str = BaseFields.cashier_name_required
     device_id: str = BaseFields.device_id_required
@@ -57,6 +60,7 @@ class AllOptional(BaseModel):
     order_status: AllowedStatusesToCreateOrder = BaseFields.order_status
     fiscal_order_id: str = BaseFields.fiscal_order_id
     payment_type: PaymentTypes = BaseFields.payment_type
+    operation_type: PaymentTypes = BaseFields.operation_type
     payment_link: str = BaseFields.payment_link
     cashier_name: str = BaseFields.cashier_name
     device_id: str = BaseFields.device_id
@@ -73,7 +77,7 @@ class RequestCreateOrder(AllRequired):
 
 class ResponseCreateOrder(AllRequired):
     id: ObjectIdStr = BaseFields.id_required
-    ordered_products: List[OrderedProductForCreatedOrder] = BaseFields.ordered_products_required
+    ordered_products: List[OrderedProductForOrder] = BaseFields.ordered_products_required
 
     class Config:
         use_enum_values = True

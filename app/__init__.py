@@ -15,7 +15,7 @@ from .utils.errors import http_error_handler, handle_422, SteakhouseException, h
 app = FastAPI()
 
 app.include_router(orders_router, prefix='/api', tags=['Orders operations'])
-# app.include_router(cart_router, prefix='/api', tags=['Cart operations'])
+app.include_router(cart_router, prefix='/api', tags=['Cart operations'])
 app.include_router(types_router, prefix='/api', tags=['Types operations'])
 app.include_router(subtypes_router, prefix='/api', tags=['Subtypes operations'])
 app.include_router(products_router, prefix='/api', tags=['Products operations'])

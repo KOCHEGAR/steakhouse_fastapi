@@ -91,7 +91,7 @@ class RequestUpdateProduct(AllOptional):
         use_enum_values = True
 
 
-class ProductForCreatedOrder(BaseModel):
+class ProductForOrder(BaseModel):
     id: ObjectIdStr = BaseFields.id_required
     barcode: str = BaseFields.barcode_required
     product_code: str = BaseFields.product_code_required

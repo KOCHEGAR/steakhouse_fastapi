@@ -5,8 +5,8 @@ from app.ordered_product.models import OrderedProduct
 
 
 class Order(Document):
-    # come from fiscal device
     fiscal_order_id = StringField(required=True)
+    operation_type = StringField(required=True)
     payment_type = StringField(required=True)
     payment_link = StringField(default='')
     cashier_name = StringField(required=True)
@@ -16,7 +16,6 @@ class Order(Document):
     total_count = IntField(required=True)
     total_price = FloatField(required=True)
 
-    # only app related
     on_site = BooleanField(required=True)
     order_status = StringField(required=True)
     ordered_products = ListField(ReferenceField(OrderedProduct, reverse_delete_rule=PULL))

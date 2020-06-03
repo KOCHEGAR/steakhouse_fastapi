@@ -101,6 +101,7 @@ class ProductForOrder(BaseModel):
 
     class Config:
         use_enum_values = True
+        orm_mode = True
 
 
 class ResponseGetProduct(AllRequired):

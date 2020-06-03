@@ -26,6 +26,7 @@ class OrderedProduct(BaseModel):
 
     class Config:
         use_enum_values = True
+        orm_mode = True
 
 
 class OrderedProductForOrder(OrderedProduct):
